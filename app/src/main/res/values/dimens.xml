@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="indent">1dp</dimen>
+    <dimen name="shapeNormal">100dp</dimen>
+    <dimen name="shapeMax">120dp</dimen>
+</resources>
