@@ -15,11 +15,15 @@ import android.widget.ImageView
 import ru.netology.funnytictactoe.databinding.ActivityMainBinding
 
 
-class DrugAndDropHandler(val context: Context,
-                         val binding: ActivityMainBinding,
-                         val game: Game,
-                         val gfh: GameFieldHelper,
-                         val resources: Resources) :   View.OnDragListener, View.OnLongClickListener{
+class DrugAndDropHandler(
+    val context: Context,
+    val binding: ActivityMainBinding,
+    val game: Game,
+    val gfh: GameFieldHelper,
+    val resources: Resources
+) : View.OnDragListener, View.OnLongClickListener {
+
+    private var iventsCount: Int = 0
 
     override fun onDrag(v: View?, event: DragEvent?): Boolean {
         val action = event?.action;
@@ -54,14 +58,25 @@ class DrugAndDropHandler(val context: Context,
                 v?.getBackground()?.clearColorFilter();
                 v?.invalidate();
                 gfh.acceptDrop(event, v)
+                binding.hint.visibility = View.INVISIBLE
 
                 val item = event.clipData.getItemAt(0)
                 val dragData = item.text.toString()
                 if (dragData == "X") {
-                    binding.moveOinfo.setAnimation(AnimationUtils.loadAnimation(context, R.anim.blink))
+                    binding.moveOinfo.setAnimation(
+                        AnimationUtils.loadAnimation(
+                            context,
+                            R.anim.blink
+                        )
+                    )
                     binding.moveXInfo.clearAnimation()
-                }else {
-                    binding.moveXInfo.setAnimation(AnimationUtils.loadAnimation(context, R.anim.blink))
+                } else {
+                    binding.moveXInfo.setAnimation(
+                        AnimationUtils.loadAnimation(
+                            context,
+                            R.anim.blink
+                        )
+                    )
                     binding.moveOinfo.clearAnimation()
                 }
                 return true
@@ -71,14 +86,19 @@ class DrugAndDropHandler(val context: Context,
                 v?.getBackground()?.clearColorFilter();
                 v?.invalidate();
                 if (event.result) {
-                    //  val sizeInPixel: Int =  resources.getDimensionPixelSize(R.dimen.shapeNormal)
-                    // binding.OPos.drawable.setBounds(0, 0, sizeInPixel, sizeInPixel );
-
-                    gfh.gameLoop(game)
                     spawnNewXandO()
+
+                    if (iventsCount < 8) {
+                        iventsCount++
+                    } else {
+                        gfh.performGamePlayChecks()
+                        iventsCount = 0
+                    }
                 }
                 return true
             }
+
+
             else -> {
                 Log.e("DragDrop", "Unknown action type received by OnDragListener.");
             }
@@ -94,12 +114,12 @@ class DrugAndDropHandler(val context: Context,
             imgO.setImageResource(R.drawable.ic_baseline_radio_button_unchecked_24)
             imgO.background = resources.getDrawable(R.drawable.button_selector)
             val lp: ViewGroup.LayoutParams = ViewGroup
-                    .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT)
-
+                .LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
 
             binding.cellOSpawn.addView(imgO)
-            //imgO.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in))
             imgO.setAnimation(AnimationUtils.loadAnimation(context, R.anim.scale_out))
         }
 
@@ -110,33 +130,22 @@ class DrugAndDropHandler(val context: Context,
             imgX.setImageResource(R.drawable.ic_baseline_clear_24)
             imgX.background = resources.getDrawable(R.drawable.button_selector)
             val lp: ViewGroup.LayoutParams = ViewGroup
-                    .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT)
-          /*  val b = imgX.drawable.bounds
-            imgX.drawable.setBounds(0,0,
-                    b.right - 100,
-                    100)*/
+                .LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
             binding.cellXSpawn.addView(imgX)
-            imgX.setAnimation(AnimationUtils.loadAnimation(context, R.anim.scale_out))
+            imgX.animation= AnimationUtils.loadAnimation(context, R.anim.scale_out)
         }
     }
-
-
 
 
     override fun onLongClick(v: View?): Boolean {
         val item = ClipData.Item(v!!.tag as CharSequence)
         val mimeTypes = arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN)
         val data = ClipData(v!!.tag.toString(), mimeTypes, item)
-
-
-
         val dragshadow = View.DragShadowBuilder(v)
-        v!!.startDrag(data // data to be dragged
-                , dragshadow // drag shadow builder
-                , v // local data about the drag and drop operation
-                , 0 // flags (not currently used, set to 0)
-        )
+        v!!.startDrag(data,dragshadow, v , 0)
         return true
     }
 

@@ -1,7 +1,8 @@
 package ru.netology.funnytictactoe
 
 import android.content.Context
-import android.graphics.Point
+import android.content.res.Resources
+import android.text.Html
 import android.view.DragEvent
 import android.view.View
 import android.view.ViewGroup
@@ -11,38 +12,56 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import ru.netology.funnytictactoe.databinding.ActivityMainBinding
 
-class GameFieldHelper(val context: Context,
-                      val binding : ActivityMainBinding,
-                      val game :Game)  {
+class GameFieldHelper(
+    val context: Context,
+    val binding: ActivityMainBinding,
+    val game: Game,
+    val resources: Resources
+) {
 
-    private val fields = arrayOf(binding.cell0,binding.cell1,binding.cell2,binding.cell3,
-            binding.cell4,binding.cell5,binding.cell6,binding.cell7,
-            binding.cell8)
 
-    fun gameLoop(game : Game) {
-        updateField(game)
+    private val fields = arrayOf(
+        binding.cell0, binding.cell1, binding.cell2, binding.cell3,
+        binding.cell4, binding.cell5, binding.cell6, binding.cell7,
+        binding.cell8
+    )
 
-       // binding.info.text = game.gameField.contentDeepToString()
-        val message = calcGameResults(game)
+    fun performGamePlayChecks() {
+        updateDataFromFieldtoArray(game)
 
-        binding.gameInfo.text = "X score:${game.xScores}    $message    O score:${game.oScores}"
+        binding.info.text = game.gameField.contentDeepToString()
+        var message = calcGameResults(game)
+        if (game.cheating) {
+            message = " hey! what are you doing?"
+            game.cheating = false
+        }
+
+
+        binding.gameInfo
+            .text = Html.fromHtml(
+            "<font color=\"blue\">X score:${game.xScores}</font>" +
+                    "&nbsp;&nbsp;&nbsp;<b>$message</b>&nbsp;&nbsp;&nbsp;<font color=\"red\">O score:" +
+                    "${game.oScores}</font>"
+        )
+
+
         val gameResult = getWinner(game)
 
         if (gameResult.weHaveWinner) {
             val animation = AnimationUtils.loadAnimation(context, R.anim.scale_in);
-           // binding.moveOinfo.startAnimation(animation)
 
-            for (f in fields){
-                 for (item in gameResult.WinnersRow)
-                    if  ((f.tag as OTag).number == item){
-                        if (f.getChildAt(0) != null){
+            for (f in fields) {
+                for (item in gameResult.WinnersRow)
+                    if ((f.tag as OTag).number == item) {
+                        if (f.getChildAt(0) != null) {
+                            f.getChildAt(0).background =
+                                resources.getDrawable(R.drawable.shadow_red)
                             f.getChildAt(0).startAnimation(animation)
                         }
                     }
-
             }
 
-            animation.setAnimationListener( object:  Animation.AnimationListener  {
+            animation.setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationStart(animation: Animation?) {
                 }
 
@@ -54,14 +73,17 @@ class GameFieldHelper(val context: Context,
                 }
             })
 
-       }
+        }
     }
 
-    private fun updateField(game: Game) {
+    /**
+     * move cells data from UI to array
+     */
+    private fun updateDataFromFieldtoArray(game: Game) {
         for (f in fields) {
             if (f.getChildAt(0) != null) {
                 game.gameField[(f.tag as OTag).point.x][(f.tag as OTag).point.y] =
-                        (f.getChildAt(0) as ImageView).tag.toString()
+                    (f.getChildAt(0) as ImageView).tag.toString()
                 (f.getChildAt(0) as ImageView).setOnLongClickListener(null)
             } else {
                 game.gameField[(f.tag as OTag).point.x][(f.tag as OTag).point.y] = "_"
@@ -69,8 +91,8 @@ class GameFieldHelper(val context: Context,
         }
     }
 
-    fun clearGameField(){
-        for (f in fields){
+    fun clearGameField() {
+        for (f in fields) {
             f.removeAllViews()
         }
     }
@@ -83,8 +105,11 @@ class GameFieldHelper(val context: Context,
         val owner: ViewGroup = vw.parent as ViewGroup
         owner.removeView(vw); //remove the dragged view
         val container: LinearLayout = v as LinearLayout;
+        if (container.getChildAt(0) != null) {
+            game.cheating = true
+        }
         container.removeAllViews()
-        container.addView(vw);
-        vw.setVisibility(View.VISIBLE);
+        container.addView(vw)
+        vw.visibility = View.VISIBLE
     }
 }

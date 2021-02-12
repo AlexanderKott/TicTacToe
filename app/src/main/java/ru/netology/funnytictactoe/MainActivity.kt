@@ -25,13 +25,13 @@ class MainActivity : AppCompatActivity(){
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.hide()
-        val gfh = GameFieldHelper(this, binding, game)
+
+        //Init field for game
+        val gfh = GameFieldHelper(this, binding, game, resources)
         dndHelper = DrugAndDropHandler(this, binding, game, gfh, resources)
 
 
-
         initSpawners()
-
         initFieldLayout(binding)
     }
 
@@ -46,22 +46,6 @@ class MainActivity : AppCompatActivity(){
 
         binding.moveXInfo.setAnimation(AnimationUtils.loadAnimation(this, R.anim.blink))
 
-     /*      binding.cellOSpawn.setOnTouchListener(object : View.OnTouchListener {
-            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-
-                if (event?.getAction() == MotionEvent.ACTION_DOWN) {
-                    binding.moveOinfo.setText(getString(R.string.infoText))
-                    return true;
-                }
-
-                if (event?.getAction() == MotionEvent.ACTION_UP) {
-                    binding.moveOinfo.setText(getString(R.string.infoText2))
-                    return true;
-                }
-
-                return false;
-            }
-        })*/
 
     }
 
@@ -111,4 +95,3 @@ class MainActivity : AppCompatActivity(){
 
 }
 
-data class OTag (val number: Int ,val point : Point)

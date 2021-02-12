@@ -1,5 +1,6 @@
 package ru.netology.funnytictactoe
 
+import android.util.Log
 import kotlin.random.Random
 
 fun computerFirstMove(field2D: Array<Array<String>>) {
@@ -101,17 +102,17 @@ fun weHaveWinner(game: Game): Boolean {
             isWinner(field2D, variants, 'X') != -1
 }
 
-fun getWinner(game: Game): GemeResult {
+fun getWinner(game: Game): GameResult {
     val field2D: Array<Array<String>> = game.gameField
     val variants: Array<Array<String>> = game.fieldVariants
     val resultX = isWinner(field2D, variants, 'X')
     val resultO = isWinner(field2D, variants, 'O')
     if (resultX != -1) {
-        return GemeResult(true, 0, mapOfUIField(resultX))
+        return GameResult(true, 0, mapOfUIField(resultX))
     } else if (resultO != -1) {
-        return GemeResult(true, 1, mapOfUIField(resultO))
+        return GameResult(true, 1, mapOfUIField(resultO))
     } else
-        return GemeResult(false, -1, emptyArray())
+        return GameResult(false, -1, emptyArray())
 }
 
 fun mapOfUIField(result: Any): Array<Int> {
@@ -123,7 +124,7 @@ fun mapOfUIField(result: Any): Array<Int> {
       4 -> arrayOf(1,4,7)
       5 -> arrayOf(2,5,8)
       6 -> arrayOf(0,4,8)
-      7 -> arrayOf(2,4,3)
+      7 -> arrayOf(2,4,6)
       else -> arrayOf()
   }
 }
@@ -137,7 +138,6 @@ fun calcGameResults(game: Game): String {
     val variants = game.fieldVariants
 
     val output = when {
-
         isWinner(field2D, variants, 'O') != -1 -> {
             game.oScores += 1
             "O wins"
