@@ -1,36 +1,17 @@
-package ru.netology.funnytictactoe
+package ru.netology.funnytictactoe.logic
 
-import android.util.Log
-import kotlin.random.Random
-
-fun computerFirstMove(field2D: Array<Array<String>>) {
-    field2D[Random.nextInt(2)][Random.nextInt(2)] = "O"
-}
-
-fun makeMoveAndCheckConditions(game: Game): Boolean {
-    val field2D: Array<Array<String>> = game.gameField
-    val variants: Array<Array<String>> = game.fieldVariants
-
-    if (hasEmptyCells(field2D) && !weHaveWinner(game)) {
-        println("Computer's move:")
-        computerMove(field2D, variants)
-        printField(field2D)
-        if (weHaveWinner(game) || !hasEmptyCells(field2D)) {
-            return false
-        }
-        return true
-    }
-    return false
-}
-
-fun computerMove(field2D: Array<Array<String>>, variants: Array<Array<String>>) {
-    val coords = getComputerMove(field2D, variants)
-    field2D[coords[0]][coords[1]] = "O"
-}
 typealias calcLine = (line: String, iteration: Int) -> Array<Int>
 
-fun getComputerMove(field2D: Array<Array<String>>, variants: Array<Array<String>>): Array<Int> {
 
+fun computerMove(game : GameState): Array<Int> =
+     getComputerMove(game.gameField, game.fieldVariants)
+
+
+
+/**
+ * Logic
+ */
+fun getComputerMove(field2D: Array<Array<String>>, variants: Array<Array<String>>): Array<Int> {
     val finishMyRowF: calcLine = { line, i ->
         if (line.count { it == 'O' } == 2 && line.indexOf("_") != -1) {
             mapOfGameField(i, line.indexOf('_'))
@@ -95,16 +76,9 @@ fun mapOfGameField(i: Int, indexOf: Int): Array<Int> {
 }
 
 
-fun weHaveWinner(game: Game): Boolean {
-    val field2D: Array<Array<String>> = game.gameField
-    val variants: Array<Array<String>> = game.fieldVariants
-    return isWinner(field2D, variants, 'O') != -1 ||
-            isWinner(field2D, variants, 'X') != -1
-}
-
-fun getWinner(game: Game): GameResult {
-    val field2D: Array<Array<String>> = game.gameField
-    val variants: Array<Array<String>> = game.fieldVariants
+fun getWinnersRow(gameState: GameState): GameResult {
+    val field2D: Array<Array<String>> = gameState.gameField
+    val variants: Array<Array<String>> = gameState.fieldVariants
     val resultX = isWinner(field2D, variants, 'X')
     val resultO = isWinner(field2D, variants, 'O')
     if (resultX != -1) {
@@ -130,21 +104,19 @@ fun mapOfUIField(result: Any): Array<Int> {
 }
 
 
-fun hasEmptyCells(field2D: Array<Array<String>>) =
-        countSteps(arrayToString(field2D), '_') > 0
 
-fun calcGameResults(game: Game): String {
-    val field2D = game.gameField
-    val variants = game.fieldVariants
+fun calcGameResults(gameState: GameState): String {
+    val field2D = gameState.gameField
+    val variants = gameState.fieldVariants
 
-    val output = when {
+    return when {
         isWinner(field2D, variants, 'O') != -1 -> {
-            game.oScores += 1
+            gameState.oScores += 1
             "O wins"
         }
 
         isWinner(field2D, variants, 'X') != -1 -> {
-            game.xScores += 1
+            gameState.xScores += 1
             "X wins"
         }
 
@@ -153,7 +125,6 @@ fun calcGameResults(game: Game): String {
         isImpossibleState(field2D, variants) -> "Cheating! Stop it :)"
         else -> "Error"
     }
-    return output
 }
 
 fun getRow(
@@ -211,24 +182,6 @@ fun isWinner(field: Array<Array<String>>, variants: Array<Array<String>>, player
 fun getCoordFromStr(variants: Array<Array<String>>, i: Int, j: Int) =
         variants[i][j].split('.').map { it.toInt() }
 
-private fun printField(field2D: Array<Array<String>>) {
-    var input = arrayToString(field2D)
-
-    val sb = StringBuilder("| ")
-    for (i in 1..input.length) {
-        if (input[i - 1] == '_') {
-            sb.append("  ")
-        } else {
-            sb.append(input[i - 1]).append(" ")
-        }
-        if (i % 3 == 0) {
-            sb.append("|\n| ")
-        }
-    }
-    println("--------- ")
-    println(sb.toString().removeSuffix("\n| "))
-    println("--------- ")
-}
 
 private fun arrayToString(field2D: Array<Array<String>>): String {
     var input = field2D.contentDeepToString()
