@@ -3,23 +3,31 @@ package ru.netology.funnytictactoe.view
 import android.content.res.Resources
 import android.graphics.Point
 import android.text.Html
+import android.util.Log
 import android.view.DragEvent
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import ru.netology.funnytictactoe.R
-import ru.netology.funnytictactoe.databinding.ActivityMainBinding
+import ru.netology.funnytictactoe.databinding.FragmentGameFieldBinding
+import ru.netology.funnytictactoe.logic.Consts
 import ru.netology.funnytictactoe.logic.GameResult
 import ru.netology.funnytictactoe.logic.GameState
 import ru.netology.funnytictactoe.logic.computerMove
+import kotlin.reflect.KProperty0
 
 class GameFieldHelper(
-    val binding: ActivityMainBinding,
+    val sounds : GameSoundPool?,
+    val binding: FragmentGameFieldBinding,
+    val tContainer : ToastsContainer,
     val gameState: GameState,
-    private val resources: Resources
+    private val resources: Resources,
 ) {
 
 
@@ -29,22 +37,56 @@ class GameFieldHelper(
         binding.cell8
     )
 
-      fun displayInfo(message: String) {
-        binding.gameInfo
-            .text = Html.fromHtml(
-            "<font color=\"blue\">X score:${gameState.xScores}</font>" +
-                    "&nbsp;&nbsp;&nbsp;<b>$message</b>&nbsp;&nbsp;&nbsp;<font color=\"red\">O score:" +
-                    "${gameState.oScores}</font>"
-        )
+
+    fun displayInfo(message: String) {
+        val msg = getScrMessage(message)
+
+        if (gameState.isCheating) {
+            showToast(R.string.cheat, tContainer.toastText, tContainer.layout, Gravity.TOP)
+            gameState.isCheating = false
+        }
+
+        if (msg != R.string.game_in_progress && msg != R.string.cheating2) {
+            showToast(msg, tContainer.toastText2, tContainer.layout2, Gravity.CENTER_HORIZONTAL)
+        }
+        updateScreenInfo(msg)
     }
 
-    fun playRowDisappearAnimationAndClearField(
-        gameResult: GameResult,
-        lastAction: () -> Unit
-    ) {
+    private fun getScrMessage(message: String) = when (message) {
+        Consts.draw -> R.string.draw
+        Consts.xWins -> R.string.x_wins
+        Consts.oWins -> R.string.o_wins
+        Consts.inProgress -> R.string.game_in_progress
+        Consts.cheating -> R.string.cheating2
+        else -> R.string.error
+    }
+
+    private fun updateScreenInfo(msg: Int) {
+        val text: String = binding.root.context.getString(
+            R.string.displayState,
+            gameState.xScores,
+            binding.root.context.getString(msg),
+            gameState.oScores,
+            binding.root.context.getString(R.string.scores)
+        )
+        binding.gameInfo.text = Html.fromHtml(text)
+    }
+
+    private fun showToast(resource: Int, toastText: TextView, layout: ViewGroup, grav : Int) {
+        toastText.text = binding.root.context.getString(resource)
+        with(Toast(binding.root.context)) {
+            view = layout
+            setGravity(grav,0,0)
+            duration = Toast.LENGTH_SHORT
+            show()
+        }
+    }
+
+    fun playRowDisappearAnimationAndClearField(gameResult: GameResult, lastAction: () -> Unit) {
         val animation = AnimationUtils.loadAnimation(binding.root.context, R.anim.scale_in);
 
         startRowAnimation(gameResult, animation)
+        sounds?.playWin()
 
         animation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {}
@@ -52,16 +94,14 @@ class GameFieldHelper(
             override fun onAnimationEnd(animation: Animation?) {
                 clearGameField()
                 lastAction()
+                sounds?.playClearField()
             }
 
             override fun onAnimationRepeat(animation: Animation?) {}
         })
     }
 
-    private fun startRowAnimation(
-        gameResult: GameResult,
-        animation: Animation?
-    ) {
+    private fun startRowAnimation(gameResult: GameResult, animation: Animation?) {
         for (f in fields) {
             for (item in gameResult.WinnersRow)
                 if ((f.tag as OTag).number == item) {
@@ -75,18 +115,18 @@ class GameFieldHelper(
     }
 
 
-    fun spawn(layout: ViewGroup, resource: Int, sign: String, dndHelper: View.OnLongClickListener?) {
+    fun spawn(
+        layout: ViewGroup,
+        resource: Int,
+        sign: String,
+        dndHelper: View.OnLongClickListener?,
+    ) {
         if (layout.childCount == 0) {
             val img: ImageView = ImageView(binding.root.context)
             img.tag = sign
             img.setOnLongClickListener(dndHelper)
             img.setImageResource(resource)
             img.background = resources.getDrawable(R.drawable.sign_selector)
-            val lp: ViewGroup.LayoutParams = ViewGroup
-                .LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
 
             layout.addView(img)
             img.visibility = View.VISIBLE
@@ -107,31 +147,32 @@ class GameFieldHelper(
     /**
      * move cells data from UI to array
      */
-      fun updateDataFromFieldtoArray(gameState: GameState) {
+    fun updateDataFromFieldtoArray(gameState: GameState) {
         for (f in fields) {
             if (f.getChildAt(0) != null) {
                 gameState.gameField[(f.tag as OTag).point.x][(f.tag as OTag).point.y] =
                     (f.getChildAt(0) as ImageView).tag.toString()
                 (f.getChildAt(0) as ImageView).setOnLongClickListener(null)
             } else {
-                gameState.gameField[(f.tag as OTag).point.x][(f.tag as OTag).point.y] = "_"
+                gameState.gameField[(f.tag as OTag).point.x][(f.tag as OTag).point.y] = Consts.empty
             }
         }
-        binding.info.text = gameState.gameField.contentDeepToString()
+        ///  binding.info.text = gameState.gameField.contentDeepToString()
 
     }
 
-    fun addComputerMoveToGameField() {
+    fun computersMove() {
         val computerMove: Array<Int> = computerMove(gameState)
 
         for (f in fields) {
             if ((f.tag as OTag).point.x == computerMove[0] &&
                 (f.tag as OTag).point.y == computerMove[1]
             ) {
-                spawn(f, R.drawable.o_sign, "O", null)
+                spawn(f, R.drawable.o_sign, Consts.o, null)
                 break
             }
         }
+        sounds?.playSecondPlayer()
     }
 
     fun clearGameField() {
@@ -140,8 +181,8 @@ class GameFieldHelper(
         }
     }
 
-    /**Add X or O to a cell
-     *
+    /**
+     *Add X or O to a cell
      */
     fun acceptDrop(event: DragEvent?, v: View?) {
         val vw: View = event?.localState as View;
@@ -150,13 +191,15 @@ class GameFieldHelper(
         val container: LinearLayout = v as LinearLayout;
         if (container.getChildAt(0) != null) {
             gameState.isCheating = true
+            sounds?.playCheating()
         }
         container.removeAllViews()
         container.addView(vw)
         vw.visibility = View.VISIBLE
+        sounds?.playFirstPlayer()
     }
 
-    fun initFieldLayout(binding: ActivityMainBinding, dndHelper: View.OnDragListener) {
+    fun initFieldLayout(binding: FragmentGameFieldBinding, dndHelper: View.OnDragListener) {
         binding.cell0.setOnDragListener(dndHelper)
         binding.cell0.tag = OTag(0, Point(0, 0))
 

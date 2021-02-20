@@ -112,18 +112,18 @@ fun calcGameResults(gameState: GameState): String {
     return when {
         isWinner(field2D, variants, 'O') != -1 -> {
             gameState.oScores += 1
-            "O wins"
+            Consts.oWins
         }
 
         isWinner(field2D, variants, 'X') != -1 -> {
             gameState.xScores += 1
-            "X wins"
+            Consts.xWins
         }
 
-        isDraw(arrayToString(field2D)) -> "Draw"
-        isGameInProcess(arrayToString(field2D)) -> "Game in the process"
-        isImpossibleState(field2D, variants) -> "Cheating! Stop it :)"
-        else -> "Error"
+        isDraw(arrayToString(field2D)) -> Consts.draw
+        isGameInProcess(arrayToString(field2D)) -> Consts.inProgress
+        isImpossibleState(field2D, variants) -> Consts.cheating
+        else -> Consts.error
     }
 }
 

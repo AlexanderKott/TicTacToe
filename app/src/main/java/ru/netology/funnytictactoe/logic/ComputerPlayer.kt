@@ -13,7 +13,7 @@ class ComputerPlayer(private var gfh : GameFieldHelper) : GameConfiguration {
     }
 
     override fun spawnPlayersSigns(dndHelper: DrugAndDropHandler) {
-        gfh.spawn(gfh.binding.cellXSpawn, R.drawable.x_sign, "X",dndHelper)
+        gfh.spawn(gfh.binding.cellXSpawn, R.drawable.x_sign, Consts.x,dndHelper)
     }
 
     override fun doGamePlay() {
@@ -21,41 +21,39 @@ class ComputerPlayer(private var gfh : GameFieldHelper) : GameConfiguration {
             updateDataFromFieldtoArray(gameState)
 
             var message = calcGameResults(gameState)
-            if (gameState.isCheating) {
-                message = " hey! what are you doing?"
-                gameState.isCheating = false
-            }
+
 
             displayInfo(message)
 
-            if (message == "Draw") {
+            if (message == Consts.draw) {
                 clearGameField()
                 displayInfo(message)
-                addComputerMoveToGameField()
+                computersMove()
                 updateDataFromFieldtoArray(gameState)
                 return
             }
-            if (getWinnersRow(gameState).winner == 0) {
+            if (getWinnersRow(gameState).winner == Consts.human) {
                 playRowDisappearAnimationAndClearField(getWinnersRow(gameState)) {}
                 return
             }
 
-            addComputerMoveToGameField()
+            computersMove()
             updateDataFromFieldtoArray(gameState)
 
             message = calcGameResults(gameState)
-            if (message == "Draw") {
+            if (message == Consts.draw) {
                 clearGameField()
                 displayInfo(message)
-                addComputerMoveToGameField()
+                computersMove()
                 updateDataFromFieldtoArray(gameState)
+                return
             }
 
-            if (getWinnersRow(gameState).winner == 1) {
+            if (getWinnersRow(gameState).winner == Consts.computer) {
                 playRowDisappearAnimationAndClearField(
                     getWinnersRow(gameState)
                 ) {
-                    addComputerMoveToGameField()
+                    computersMove()
                     updateDataFromFieldtoArray(gameState)
                 }
                 displayInfo(message)

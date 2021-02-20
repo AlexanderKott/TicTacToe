@@ -9,36 +9,26 @@ import ru.netology.funnytictactoe.view.humanUI
 
 class HumanPlayer(private var gfh: GameFieldHelper) : GameConfiguration {
     override fun displayAnimation(sing: String, anim1: () -> Unit, anim2: () -> Unit) {
-        if (sing == "X") {
-            anim2.invoke()
-        } else {
+        if (sing == Consts.x) {
             anim1.invoke()
+        } else {
+            anim2.invoke()
         }
     }
 
     override fun spawnPlayersSigns(dndHelper: DrugAndDropHandler) {
-        gfh.spawn(gfh.binding.cellXSpawn, R.drawable.x_sign, "X", dndHelper)
-        gfh.spawn(
-            gfh.binding.cellOSpawn,
-            R.drawable.o_sign,
-            "O",
-            dndHelper
-        )
+        gfh.spawn(gfh.binding.cellXSpawn, R.drawable.x_sign, Consts.x, dndHelper)
+        gfh.spawn(gfh.binding.cellOSpawn, R.drawable.o_sign, Consts.o, dndHelper)
     }
 
     override fun doGamePlay() {
         with(gfh) {
             updateDataFromFieldtoArray(gameState)
-
             var message = calcGameResults(gameState)
-            if (gameState.isCheating) {
-                message = " hey! what are you doing?"
-                gameState.isCheating = false
-            }
 
             displayInfo(message)
 
-            if (message == "Draw") {
+            if (message == Consts.draw) {
                 clearGameField()
                 return
             }

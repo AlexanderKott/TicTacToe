@@ -3,18 +3,22 @@ package ru.netology.funnytictactoe.view
 import android.graphics.Point
 import android.view.View
 import ru.netology.funnytictactoe.R
+import ru.netology.funnytictactoe.logic.Consts
 
 
 fun computerUI(lcl: View.OnLongClickListener, gfh: GameFieldHelper) {
-    gfh.spawn(gfh.binding.cellXSpawn, R.drawable.x_sign, "X", lcl)
-    gfh.binding.moveOinfo.text = "play angainst computer"
+    gfh.spawn(gfh.binding.cellXSpawn, R.drawable.x_sign, Consts.x, lcl)
+    gfh.binding.moveOinfo.text = gfh.binding.root.context.getString(R.string.versusPC) 
+    gfh.binding.moveXinfo.text = gfh.binding.root.context.getString(R.string.yourMove)
     gfh.spawnComputerIcon()
 }
 
 
 fun humanUI(lcl: View.OnLongClickListener, gfh: GameFieldHelper) {
-    gfh.spawn(gfh.binding.cellOSpawn, R.drawable.x_sign, "O", lcl)
-    gfh.spawn(gfh.binding.cellXSpawn, R.drawable.o_sign, "X", lcl)
+    gfh.spawn(gfh.binding.cellOSpawn, R.drawable.o_sign, Consts.o, lcl)
+    gfh.spawn(gfh.binding.cellXSpawn, R.drawable.x_sign, Consts.x, lcl)
+    gfh.binding.moveXinfo.text = gfh.binding.root.context.getString(R.string.yourMove)
+    gfh.binding.moveOinfo.text = gfh.binding.root.context.getString(R.string.yourMove)
 }
 
 

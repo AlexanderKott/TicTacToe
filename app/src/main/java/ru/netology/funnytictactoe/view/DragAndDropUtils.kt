@@ -2,7 +2,6 @@ package ru.netology.funnytictactoe.view
 
 import android.content.ClipData
 import android.content.ClipDescription
-import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.util.Log
@@ -10,12 +9,12 @@ import android.view.DragEvent
 import android.view.View
 import android.view.animation.AnimationUtils
 import ru.netology.funnytictactoe.R
-import ru.netology.funnytictactoe.databinding.ActivityMainBinding
+import ru.netology.funnytictactoe.databinding.FragmentGameFieldBinding
 import ru.netology.funnytictactoe.logic.GameConfiguration
 
 
 class DrugAndDropHandler(
-    val binding: ActivityMainBinding,
+    val binding: FragmentGameFieldBinding,
     val gConfiguration: GameConfiguration,
 ) : View.OnDragListener, View.OnLongClickListener {
 
@@ -57,10 +56,10 @@ class DrugAndDropHandler(
                     {
                         binding.moveOinfo.animation =
                             AnimationUtils.loadAnimation(binding.root.context, R.anim.blink)
-                        binding.moveXInfo.clearAnimation()
+                        binding.moveXinfo.clearAnimation()
                     },
                     {
-                        binding.moveXInfo.animation =
+                        binding.moveXinfo.animation =
                             AnimationUtils.loadAnimation(binding.root.context, R.anim.blink)
                         binding.moveOinfo.clearAnimation()
                     }
