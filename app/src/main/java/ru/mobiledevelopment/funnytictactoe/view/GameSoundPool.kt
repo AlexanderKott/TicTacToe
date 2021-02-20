@@ -34,11 +34,6 @@ class GameSoundPool(private val context: Context) {
     private var rightVolume: Float = 0.0F
 
     private fun initSounds() {
-        /* soundPool.setOnLoadCompleteListener(SoundPool.OnLoadCompleteListener { soundpool, b, c ->
-             Log.e("abc", "ON LOAD sampleId=" + b + " status=" + c);
-         }
-         )*/
-
         win = soundPool.load(context, R.raw.win, 1)
         firstPlayer = soundPool.load(context, R.raw.player1, 1)
         secondPlayer = soundPool.load(context, R.raw.player2, 1)

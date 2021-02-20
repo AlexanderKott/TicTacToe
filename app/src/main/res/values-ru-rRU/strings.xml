@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">FunnyTicTacToe</string>
+    <string name="app_name">Прикольные крестики-нолики</string>
     <string name="infoText">FunnyTicTacToe</string>
     <string name="yourMove">Твой ход</string>
     <string name="computer">компьютер</string>

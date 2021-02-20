@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FunnyTicTacToe</string>
+    <string name="app_name">Funny Tic-Tac-Toe</string>
     <string name="infoText">FunnyTicTacToe</string>
     <string name="yourMove">Your move</string>
     <string name="computer">computer</string>
