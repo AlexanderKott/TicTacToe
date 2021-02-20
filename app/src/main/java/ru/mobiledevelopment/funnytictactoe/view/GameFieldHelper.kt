@@ -1,9 +1,8 @@
-package ru.netology.funnytictactoe.view
+package ru.mobiledevelopment.funnytictactoe.view
 
 import android.content.res.Resources
 import android.graphics.Point
 import android.text.Html
-import android.util.Log
 import android.view.DragEvent
 import android.view.Gravity
 import android.view.View
@@ -14,13 +13,12 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import ru.netology.funnytictactoe.R
-import ru.netology.funnytictactoe.databinding.FragmentGameFieldBinding
-import ru.netology.funnytictactoe.logic.Consts
-import ru.netology.funnytictactoe.logic.GameResult
-import ru.netology.funnytictactoe.logic.GameState
-import ru.netology.funnytictactoe.logic.computerMove
-import kotlin.reflect.KProperty0
+import ru.mobiledevelopment.funnytictactoe.R
+import ru.mobiledevelopment.funnytictactoe.databinding.FragmentGameFieldBinding
+import ru.mobiledevelopment.funnytictactoe.logic.Consts
+import ru.mobiledevelopment.funnytictactoe.logic.GameResult
+import ru.mobiledevelopment.funnytictactoe.logic.GameState
+import ru.mobiledevelopment.funnytictactoe.logic.computerMove
 
 class GameFieldHelper(
     val sounds : GameSoundPool?,

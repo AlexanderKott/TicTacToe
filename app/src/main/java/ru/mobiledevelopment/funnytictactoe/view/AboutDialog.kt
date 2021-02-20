@@ -1,17 +1,15 @@
-package ru.netology.funnytictactoe.view
+package ru.mobiledevelopment.funnytictactoe.view
 
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.DialogFragment
-import ru.netology.funnytictactoe.R
+import ru.mobiledevelopment.funnytictactoe.R
 
 
 class AboutDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-
-
 
     return AlertDialog.Builder(requireContext())
     .setMessage(getString(R.string.about))

@@ -1,4 +1,4 @@
-package ru.netology.funnytictactoe.view
+package ru.mobiledevelopment.funnytictactoe.view
 
 import android.content.ClipData
 import android.content.ClipDescription
@@ -8,9 +8,9 @@ import android.util.Log
 import android.view.DragEvent
 import android.view.View
 import android.view.animation.AnimationUtils
-import ru.netology.funnytictactoe.R
-import ru.netology.funnytictactoe.databinding.FragmentGameFieldBinding
-import ru.netology.funnytictactoe.logic.GameConfiguration
+import ru.mobiledevelopment.funnytictactoe.R
+import ru.mobiledevelopment.funnytictactoe.databinding.FragmentGameFieldBinding
+import ru.mobiledevelopment.funnytictactoe.logic.GameConfiguration
 
 
 class DrugAndDropHandler(

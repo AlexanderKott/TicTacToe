@@ -1,10 +1,9 @@
-package ru.netology.funnytictactoe.logic
+package ru.mobiledevelopment.funnytictactoe.logic
 
 import android.view.DragEvent
 import android.view.View
-import ru.netology.funnytictactoe.databinding.ActivityMainBinding
-import ru.netology.funnytictactoe.view.DrugAndDropHandler
-import ru.netology.funnytictactoe.view.GameFieldHelper
+import ru.mobiledevelopment.funnytictactoe.view.DrugAndDropHandler
+import ru.mobiledevelopment.funnytictactoe.view.GameFieldHelper
 
 interface GameConfiguration {
     fun displayAnimation(sing: String, anim1: () -> Unit, anim2: () -> Unit)

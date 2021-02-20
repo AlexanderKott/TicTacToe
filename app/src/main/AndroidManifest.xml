@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ru.netology.funnytictactoe">
+    package="ru.mobiledevelopment.funnytictactoe">
 
     <application
         android:allowBackup="true"
@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FunnyTicTacToe">
-        <activity android:name=".MainActivity" android:screenOrientation="landscape">
+        <activity android:name="ru.mobiledevelopment.funnytictactoe.view.MainActivity" android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

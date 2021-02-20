@@ -1,9 +1,9 @@
-package ru.netology.funnytictactoe.view
+package ru.mobiledevelopment.funnytictactoe.view
 
 import android.graphics.Point
 import android.view.View
-import ru.netology.funnytictactoe.R
-import ru.netology.funnytictactoe.logic.Consts
+import ru.mobiledevelopment.funnytictactoe.R
+import ru.mobiledevelopment.funnytictactoe.logic.Consts
 
 
 fun computerUI(lcl: View.OnLongClickListener, gfh: GameFieldHelper) {

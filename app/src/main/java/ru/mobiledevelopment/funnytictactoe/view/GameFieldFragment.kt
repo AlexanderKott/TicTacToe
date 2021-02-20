@@ -1,7 +1,5 @@
-package ru.netology.funnytictactoe
+package ru.mobiledevelopment.funnytictactoe.view
 
-import android.media.AudioAttributes
-import android.media.SoundPool
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,15 +7,12 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import ru.netology.funnytictactoe.databinding.FragmentGameFieldBinding
-import ru.netology.funnytictactoe.logic.ComputerPlayer
-import ru.netology.funnytictactoe.logic.GameState
-import ru.netology.funnytictactoe.logic.HumanPlayer
-import ru.netology.funnytictactoe.logic.initGameField
-import ru.netology.funnytictactoe.view.DrugAndDropHandler
-import ru.netology.funnytictactoe.view.GameFieldHelper
-import ru.netology.funnytictactoe.view.GameSoundPool
-import ru.netology.funnytictactoe.view.ToastsContainer
+import ru.mobiledevelopment.funnytictactoe.R
+import ru.mobiledevelopment.funnytictactoe.databinding.FragmentGameFieldBinding
+import ru.mobiledevelopment.funnytictactoe.logic.ComputerPlayer
+import ru.mobiledevelopment.funnytictactoe.logic.GameState
+import ru.mobiledevelopment.funnytictactoe.logic.HumanPlayer
+import ru.mobiledevelopment.funnytictactoe.logic.initGameField
 
 
 class GameFieldFragment : Fragment() {

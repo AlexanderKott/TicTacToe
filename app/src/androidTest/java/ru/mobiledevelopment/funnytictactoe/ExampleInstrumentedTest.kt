@@ -1,4 +1,4 @@
-package ru.netology.funnytictactoe
+package ru.mobiledevelopment.funnytictactoe
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

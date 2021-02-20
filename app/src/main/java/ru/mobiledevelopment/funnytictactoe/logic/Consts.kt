@@ -1,4 +1,4 @@
-package ru.netology.funnytictactoe.logic
+package ru.mobiledevelopment.funnytictactoe.logic
 
 object Consts {
     const val draw = "Draw"

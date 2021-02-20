@@ -1,4 +1,4 @@
-package ru.netology.funnytictactoe
+package ru.mobiledevelopment.funnytictactoe
 
 import org.junit.Test
 

@@ -1,4 +1,4 @@
-package ru.netology.funnytictactoe
+package ru.mobiledevelopment.funnytictactoe.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,8 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.fragment.app.setFragmentResult
-import ru.netology.funnytictactoe.databinding.FragmentGameMenuBinding
-import ru.netology.funnytictactoe.view.AboutDialog
+import ru.mobiledevelopment.funnytictactoe.R
+import ru.mobiledevelopment.funnytictactoe.databinding.FragmentGameMenuBinding
 
 
 class GameMenuFragment : Fragment() {
@@ -33,7 +33,7 @@ class GameMenuFragment : Fragment() {
 
         binding.PvP.setOnClickListener {
             activity?.supportFragmentManager?.commit {
-                setCustomAnimations(R.anim.bounce, R.anim.fade_out,R.anim.bounce, R.anim.fade_out)
+                setCustomAnimations(R.anim.bounce, R.anim.fade_out, R.anim.bounce, R.anim.fade_out)
                 val bundle = bundleOf("secondPlayer" to "human")
 
                 setReorderingAllowed(true)
@@ -46,7 +46,7 @@ class GameMenuFragment : Fragment() {
             activity?.supportFragmentManager?.commit {
                 val bundle = bundleOf("secondPlayer" to "computer")
                 setReorderingAllowed(true)
-                setCustomAnimations(R.anim.bounce, R.anim.fade_out,R.anim.bounce, R.anim.fade_out)
+                setCustomAnimations(R.anim.bounce, R.anim.fade_out, R.anim.bounce, R.anim.fade_out)
                 addToBackStack("computer")
                 replace<GameFieldFragment>(R.id.fragment_container_view, "tag", bundle)
             }

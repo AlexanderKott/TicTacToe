@@ -1,11 +1,10 @@
-package ru.netology.funnytictactoe.view
+package ru.mobiledevelopment.funnytictactoe.view
 
 import android.content.Context
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.SoundPool
-import androidx.core.content.ContextCompat.getSystemService
-import ru.netology.funnytictactoe.R
+import ru.mobiledevelopment.funnytictactoe.R
 
 
 class GameSoundPool(private val context: Context) {

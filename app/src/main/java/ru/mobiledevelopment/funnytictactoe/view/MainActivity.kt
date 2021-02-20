@@ -1,4 +1,4 @@
-package ru.netology.funnytictactoe
+package ru.mobiledevelopment.funnytictactoe.view
 
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -8,7 +8,8 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
-import ru.netology.funnytictactoe.databinding.ActivityMainBinding
+import ru.mobiledevelopment.funnytictactoe.R
+import ru.mobiledevelopment.funnytictactoe.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {

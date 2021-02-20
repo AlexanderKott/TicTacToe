@@ -1,4 +1,4 @@
-package ru.netology.funnytictactoe.view
+package ru.mobiledevelopment.funnytictactoe.view
 
 import android.view.ViewGroup
 import android.widget.TextView
