@@ -3,6 +3,7 @@ package ru.mobiledevelopment.funnytictactoe.view
 import android.content.res.Resources
 import android.graphics.Point
 import android.text.Html
+import android.util.Log
 import android.view.DragEvent
 import android.view.Gravity
 import android.view.View
@@ -50,7 +51,7 @@ class GameFieldHelper(
         updateScreenInfo(msg)
     }
 
-    private fun getScrMessage(message: String) = when (message) {
+      fun getScrMessage(message: String) = when (message) {
         Consts.draw -> R.string.draw
         Consts.xWins -> R.string.x_wins
         Consts.oWins -> R.string.o_wins
@@ -59,7 +60,7 @@ class GameFieldHelper(
         else -> R.string.error
     }
 
-    private fun updateScreenInfo(msg: Int) {
+      fun updateScreenInfo(msg: Int) {
         val text: String = binding.root.context.getString(
             R.string.displayState,
             gameState.xScores,
@@ -70,7 +71,7 @@ class GameFieldHelper(
         binding.gameInfo.text = Html.fromHtml(text)
     }
 
-    private fun showToast(resource: Int, toastText: TextView, layout: ViewGroup, grav : Int) {
+      fun showToast(resource: Int, toastText: TextView, layout: ViewGroup, grav : Int) {
         toastText.text = binding.root.context.getString(resource)
         with(Toast(binding.root.context)) {
             view = layout

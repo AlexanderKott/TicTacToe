@@ -1,5 +1,6 @@
 package ru.mobiledevelopment.funnytictactoe.logic
 
+import android.util.Log
 import android.view.DragEvent
 import android.view.View
 import ru.mobiledevelopment.funnytictactoe.view.DrugAndDropHandler
@@ -22,9 +23,6 @@ class ComputerPlayer(private var gfh : GameFieldHelper) : GameConfiguration {
 
             var message = calcGameResults(gameState)
 
-
-            displayInfo(message)
-
             if (message == Consts.draw) {
                 clearGameField()
                 displayInfo(message)
@@ -32,10 +30,13 @@ class ComputerPlayer(private var gfh : GameFieldHelper) : GameConfiguration {
                 updateDataFromFieldtoArray(gameState)
                 return
             }
+
+            displayInfo(message)
             if (getWinnersRow(gameState).winner == Consts.human) {
                 playRowDisappearAnimationAndClearField(getWinnersRow(gameState)) {}
                 return
             }
+
 
             computersMove()
             updateDataFromFieldtoArray(gameState)
